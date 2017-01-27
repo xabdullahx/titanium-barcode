@@ -9,10 +9,10 @@ Build prerequisites
 To build the module, there are some dependencies which need to be fulfilled:
 
 - Git
-- Titanium Mobile SDK 1.8.1 or above
+- Titanium Mobile SDK 6.0.1.GA or above
 - Python >= 2.5
-- Sun Java SDK 6.0
-- Android SDK with Google APIs and SDK version 4 installed
+- Java JDK 1.8
+- Android SDK with Google APIs and SDK version 23 installed
 - Ant >= 1.7.1
 
 
@@ -34,6 +34,26 @@ If the build fails, make sure the entries in the buld.properies file point to th
     google.apis=/opt/android-sdk/add-ons/addon_google_apis_google_inc_4
 
 The newly created *.jar and *.zip files can be found in the dist directory. The module you need is called com.mwaysolutions.barcode-android-$VERSION.zip
+
+
+NOTICE: Due to some errors in titanium, i had to correct these two things myself:
+Go to C:\ProgramData\Titanium\mobilesdk\win32\6.0.1.GA\module\android and open build.xml
+
+Line 134:
+change this line:
+<property name="python.bat" location="${titanium.platform}/../win32/python.bat"/>
+
+to this:
+<property name="python.bat" location="${titanium.platform}/../win32/python.bat"/>
+
+
+Line 159:
+change this line:
+<include name="**/*/aidl"/>
+
+to this:
+<include name="**/*/aidl.exe"/>
+
 
 Use the module
 --------------
@@ -96,4 +116,3 @@ Code Example
         alert("cancel"); 
       }
     });
-
