@@ -1,40 +1,93 @@
-// This is a test harness for your module
-// You should do something interesting in this harness 
-// to test out the module and to provide instructions 
-// to users on how to use it by example.
+/*
+ * Single Window Application Template:
+ * A basic starting point for your application.  Mostly a blank canvas.
+ * 
+ * In app.js, we generally take care of a few things:
+ * - Bootstrap the application with any data we need
+ * - Check for dependencies like device type, platform version or network connection
+ * - Require and open our top-level UI component
+ *  
+ */
+Ti.include('/MWBScanner.js');
+//bootstrap and check dependencies
+if (Ti.version < 1.8 ) {
+	alert('Sorry - this application template requires Titanium Mobile SDK 1.8 or later');	  	
+}
 
-// open a single window
-var window = Ti.UI.createWindow({
-	backgroundColor:'white'
-});
+// This is a single context application with multiple windows in a stack
+(function() {
+	//render appropriate components based on the platform and form factor
+	var osname = Ti.Platform.osname,
+		version = Ti.Platform.version,
+		height = Ti.Platform.displayCaps.platformHeight,
+		width = Ti.Platform.displayCaps.platformWidth;
+	
+	//considering tablet to have one dimension over 900px - this is imperfect, so you should feel free to decide
+	//yourself what you consider a tablet form factor for android
+	var isTablet = osname === 'ipad' || (osname === 'android' && (width > 899 || height > 899));
+	
+	var Window;
+	if (isTablet) {
+		Window = require('ui/tablet/ApplicationWindow');
+	}
+	else {
+		// Android uses platform-specific properties to create windows.
+		// All other platforms follow a similar UI pattern.
+		if (osname === 'android') {
+			Window = require('ui/handheld/android/ApplicationWindow');
+		}
+		else {
+			Window = require('ui/handheld/ApplicationWindow');
+		}
+	}
+	
+	
+	
+	var window = new Window({
+  	  backgroundColor:'white'
+ 	 });
 
-var label = Ti.UI.createLabel();
-window.add(label);
-window.open();
+	var button = Titanium.UI.createButton({
+	   title: 'Start Scanning',
+	   top: 20,
+	   width: 300,
+	   height: 80
+	});
+	
+	button.addEventListener('click',function(){
+		 if(Ti.Platform.osname == 'android'){
+				var hasCameraPermissions = Ti.Media.hasCameraPermissions();
+			 	if (hasCameraPermissions) {
+		
+			    	startScanning();
+			    }else{
+				    	Ti.Media.requestCameraPermissions(function(e) {
+							// log.args('Ti.Media.requestCameraPermissions', e);
+					
+							if (e.success) {
+					
+						    	startScanning();
+					
+							} else if (OS_ANDROID) {
+								alert('You don\'t have the required uses-permissions in tiapp.xml or you denied permission for now, forever or the dialog did not show at all because you denied forever before.');
+					
+							} else {
+					
+								// We already check AUTHORIZATION_DENIED earlier so we can be sure it was denied now and not before
+								alert('You denied permission.');
+							}
+					});
+		    	
+			    }
+	    }else{
+	    	startScanning();
 
-var titaniumBarcode = require('com.mwaysolutions.barcode');
-
-Titanium.Barcode.scan({
-  success:function(data) {
-    if(data && data.barcode) {
-      var label = Titanium.UI.createLabel({
-        text:'Barcode: ' + data.barcode,
-        textAlign:'center',
-        width:'auto'
-      });
-
-      win.add(label);
-    } else {
-      alert(JSON.stringify(data));
-    }
-  },
-
-  error:function(err) { 
-    alert("Error!! " + err); 
-  },
-
-  cancel:function() { 
-    alert("cancel"); 
-  }
-});
-
+	    }
+	});
+		
+	window.add(button);
+	
+	window.open();
+	
+	
+})();

@@ -2,16 +2,17 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 0.3
-apiversion: 2
-description: Barcode module
-author: M-WAY Solutions GmbH
-license: Apache v2 license
-copyright: Copyright (c) 2011 M-WAY Solutions GmbH
+version: 3.1.1
+apiversion: 3
+architectures: armeabi-v7a x86
+description: manteebarcode
+author: Your Name
+license: Specify your license
+copyright: Copyright (c) 2017 by Your Company
 
 # these should not be edited
-name: barcode
-moduleid: com.mwaysolutions.barcode
-guid: bc88d841-a015-45a8-8d95-31a4fa924c35
+name: manteebarcode
+moduleid: com.manateeworks.barcodescanner
+guid: 4c0771b7-39c2-476a-afba-18360f374896
 platform: android
-minsdk: 1.8.1
+minsdk: 6.0.1.GA
