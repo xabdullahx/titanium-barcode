@@ -1,0 +1,59 @@
+<h1>MWBarcodeScanner Module</h1>
+<h2>Description</h2>
+<p>This module implements the Manatee Works Barcode Scanner SDK API for all iOS and Android Titanium developers.</p>
+<h2>Licensing</h2>
+<p>The free version of the Manatee Works Barcode SDK provides support for UPC and EAN barcodes. For other barcode symbologies, a valid license key is required. Visit the <a href="http://manateeworks.com/developers">Manatee Works Developer Network</a> or e-mail our <a href="mailto:sales@manateeworks">sales</a> to purchase a license. Trial licenses, enabling all SDK features for 30 days, are also available from the website. Note there is no Titanimum specific licensing requirement; only a license for the native operating system (Android or iOS) is necessary. Once a licene key is obtained, update the call to the <em>MWBinitDecoder</em> function in<em>Resources/MWBScanner.js</em>, providing the key string.</p>
+<h2>Dependencies</h2>
+<p>This module requires Release 3.1 or newer of the Titanium SDK. This module does not include support for the ARMv6 architecture on iOS.</p>
+<h2>Accessing the mwbarcodescanner Module</h2>
+<p>To access this module from JavaScript, include the following:</p>
+<pre><code>var scanner = require('com.manateeworks.barcodescanner');
+</code></pre>
+<h2>Reference</h2>
+<h4>Decoder Configuration Functions:</h4>
+<p><strong>BarcodeScanner.MWBinitDecoder ()</strong><br />Initializes the decoder with default parameters. </p>
+<p><strong>BarcodeScanner.MWBsetActiveCodes (activeCodes)</strong><br />Sets the status of different decoder types to active or inactive and updates the decoder's execution priority list. </p>
+<p><strong>BarcodeScanner.MWBsetActiveSubcodes (codeMask, activeSubcodes)</strong> <br />Sets active subcodes for given code group flag. </p>
+<p><strong>BarcodeScanner.MWBsetFlags (codeMask, flags)</strong><br />Configures options for any single barcode type specified in <em>codeMask</em>. These options are given in <em>flags</em> as bitwise OR as option bits. The available options depend on the previously selected decoder types.</p>
+<p><strong>BarcodeScanner.MWBsetDirection (direction)</strong> <br />Configures scanning direction for 1D and/or PDF417 decoders (not affecting QR, Aztec and DataMatrix)</p>
+<p><strong>BarcodeScanner.MWBsetScanningRect (codeMask, left, top, width, height)</strong> <br />Sets rectangular area for barcode scanning with any selected decoder type. The parameters are percentages of full screen width and height.</p>
+<p><strong>BarcodeScanner.MWBsetLevel (level)</strong><br />Configures the global library effort level, where 1 is fastest and 5 is hardest. For live scanning, recommended are levels 2 or 3.</p>
+<p><em>For a detailed explanation of all configuration functions available to the decoder, please get official documentation from <a href="http://www.manateeworks.com">Manateeworks site</a></em></p>
+<h3>Decoder Interface Functions:</h3>
+<p><strong>BarcodeScanner.MWBregisterSDK(key)</strong> <br />Registers licensing information for all SDK functionality</p>
+<p><strong>BarcodeScanner.MWBuseHiRes (hiRes)</strong><br />Forces using higher scanning resolution if available on the device. The default setting is FALSE.</p>
+<p><strong>BarcodeScanner.MWBsetButtonsVisible (flashVisible, closeVisible)</strong><br />Enables/disables "Flash" and "Close" buttons. Close button is ignored on Android and never displayed. </p>
+<p><strong>BarcodeScanner.MWBuseBlinkingLineOverlay (blinkingLine)</strong><br />If TRUE, it shows scanning rectangle with a blinking line. If FALSE, the overlay image is displayed. The default setting is TRUE.</p>
+<p><strong>BarcodeScanner.MWBsetCloseCameraOnDetection (closeOnDetection)</strong><br />If TRUE, the scanning screen will be closed automatically on next barcode detection. If FALSE, the result callback will be executed but it will remain on scanning screen with scanning paused. The default setting is TRUE.</p>
+<p><strong>BarcodeScanner.MWBresumeScanning()</strong><br />Resumes scanning if previously paused.</p>
+<p><strong>BarcodeScanner.MWBcloseScanner()</strong><br />Stop scanning and close scanner screen. </p>
+<p><strong>startScanning ()</strong><br />Show camera screen and start scanning.</p>
+<p><strong>BarcodeScanner.MWBsetMaxThreads(maxThreads)</strong><br />Set the number of CPUs to be used.</p>
+<p><strong>BarcodeScanner.MWBenableZoom(enableZoom)</strong><br />Enable or disable zoom button on scanning screen. If device doesn't support zoom, button will be hidden regardles of param. Default value is true (enabled)</p>
+<p><strong>BarcodeScanner.MWBsetZoomLevels(zoomLevel1, zoomLevel2, initialZoomLevel)</strong><br />Set two desired zoom levels in percentage and initial level. Set first two params to zero for default levels. On iOS, first zoom level is set to maximum non-interpolated level available on device, and second is double of first level. On Android, default first zoom is 150% and second is 300%. Initial zoom level can be 0 (100% - non zoomed), 1 (zoomLevel1) or 2 (zoomLevel2). Default is 0.</p>
+<h2>Usage</h2>
+<p>Step-by-Step guide for adding the plugin to your Titanium project(s):</p>
+<ol>
+<li>Build Android/iOS modules and then add them to the project (by using Titanium Studio build/publish options)</li>
+<li>Copy <em>example/MWBScanner.js</em> from the plugin folder into your app's <em>Resources</em> folder</li>
+<li>Include <em>MWBScanner.js</em> to app.js: <em>Ti.include('/MWBScanner.js')</em>;</li>
+<li>Adjust <em>MWBinitDecoder</em> function according to your personal preferences</li>
+<li>Call <em>startScanning()</em> function to start scanning</li>
+<li>Handle scanner result in <em>scanner.startScanning</em> callback</li>
+<li>(iOS 10)&nbsp;add new privacy permission settingfor camera inside tiapp.xml:&nbsp;
+<p class="p1">&lt;ios&gt;</p>
+<p class="p1"><span class="Apple-converted-space">&nbsp; </span>&lt;plist&gt;</p>
+<p class="p1"><span class="Apple-converted-space">&nbsp; &nbsp; </span>&lt;dict&gt;</p>
+<p class="p1"><span class="Apple-converted-space">&nbsp; &nbsp; &nbsp; </span>&lt;key&gt;NSCameraUsageDescription&lt;/key&gt;</p>
+<p class="p1"><span class="Apple-converted-space">&nbsp; </span>&lt;string&gt;Barcode Scanning&lt;/string&gt;</p>
+<p class="p1"><span class="Apple-converted-space">&nbsp; &nbsp; </span>&lt;/dict&gt;</p>
+<p class="p1"><span class="Apple-converted-space">&nbsp; </span>&lt;/plist&gt;</p>
+<p class="p1">&lt;/ios&gt;</p>
+</li>
+</ol>
+<p>It's highly recommended to put all decoder and related interface configuration options inside the <em>MWBinitDecoder</em> function in <em>MWBScanner.js</em></p>
+<h2>Feedback and Support</h2>
+<p>Please direct all questions, feedback, and concerns to <a href="mailto:support@manateeworks.com">support@manateeworks.com</a></p>
+<h2>License</h2>
+<p>Copyright(c) 2012-2016 by Manatee Works, Inc. All Rights Reserved. Please see the License Agreement file included in the distribution for further details.</p>
+<p class="p1">&nbsp;</p>
